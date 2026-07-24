@@ -26,20 +26,20 @@ built with React, TypeScript, and Tailwind CSS.
 | ![Light](screenshots/light.png) | ![Dark](screenshots/dark.png) | ![Mobile](screenshots/mobile.png) |
 
 ## 🚀 Getting Started
-\`\`\`
+```
 bash
 git clone https://github.com/Notify4660/weather-news-app.git
 cd weather-app
 npm install
 npm run dev
-\`\`\`
+```
 
 ## 🔗 APIs
 - [OpenWeatherMap](https://openweathermap.org/)
 - [NewsAPI](https://newsapi.org/)
 
 ## 📂 Project Structure
-\`\`\`
+```
 src/
 ├── api/          # API services
 ├── assets/       # Images
@@ -47,7 +47,7 @@ src/
 ├── contexts/     # ThemeContext
 ├── hooks/        # useDebounce
 └── utils/        # Helpers
-\`\`\`
+```
 
 ## 🌐 Demo
 [Live Demo](https://your-app.vercel.app)
