@@ -50,7 +50,7 @@ src/
 ```
 
 ## 🌐 Demo
-[Live Demo]([https://your-app.vercel.app](https://weather-news-app-kohl.vercel.app/))
+[Live Demo](https://weather-news-app-kohl.vercel.app/)
 
 ## 📅 Timeline
 
