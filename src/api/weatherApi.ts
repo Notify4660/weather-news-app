@@ -11,55 +11,52 @@ const weatherClient = axios.create({
     headers: {
         'Accept': 'application/json'
     },
+    params:{
+        appid: API_KEY,
+        units: 'metric',
+    }
 });
 
 //Adding an interceptor for logging
-weatherClient.interceptors.request.use(
-    (config) => {
-        console.log('Request:', config.url, config.params);
-        return config;
-    },
-    (error) => {
-        console.error('Request Error:', error);
-        return Promise.reject(error);
-    }
-);
-
-weatherClient.interceptors.response.use(
-    (response) => {
-        console.log('Response:', response.status);
-        return response;
-    },
-    (error) => {
-        console.log('Response Error:', error.message);
-        return Promise.reject(error)
-    }
-)
+if (import.meta.env.DEV) {
+    weatherClient.interceptors.request.use(
+        (config) => {
+            console.log('Request:', config.url, config.params);
+            return config;
+        },
+        (error) => {
+            console.error('Request Error:', error);
+            return Promise.reject(error);
+        }
+    );
+    weatherClient.interceptors.response.use(
+        (response) => {
+            console.log('Response:', response.status);
+            return response;
+        },
+        (error) => {
+            console.log('Response Error:', error.message);
+            return Promise.reject(error)
+        }
+    )
+}
 
 //Weather API service
 export const weatherApi = {
     //Get current weather by city name
     getCurrentWeather: async (city: string): Promise<WeatherData> => {
-        const response = await weatherClient.get(`${BASE_URL}/weather`, {
-            params: {
-                q: city,
-                appid: API_KEY,
-                units: 'metric',
-            },
+        const response = await weatherClient.get(`/weather`, {
+            params: { q: city },
         });
-        // const dataWeather = 
         return response.data
     },
 
     //Get 5-day forecast
     getForecast: async (city: string): Promise<ForecastData> => {
-        const response = await weatherClient.get(`${BASE_URL}/forecast`, {
-            params: {
-                q: city,
-                appid: API_KEY,
-                units: 'metric'
-            },
+        const response = await weatherClient.get(`/forecast`, {
+            params: { q: city },
         });
         return response.data
     },
 };
+

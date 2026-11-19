@@ -40,10 +40,14 @@ const NewsList: React.FC<NewsListProps> = ({newsData}) =>{
         }
     },[visibleCount])
 
-    /* Image placeholder */ 
+    /**
+     * Returns a proxied image URL
+     * images.weserv.nl proxies external images and sets CORS headers
+     * so the browser allows them to load
+     * Also resizes to 400x250 to avoid layout shifts
+     */
     const getImageUrl = (url: string) => {
         if (!url) return null;
-        // Прокси для обхода CORS
         return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=400&h=250&fit=cover`;
     };
 
@@ -68,9 +72,9 @@ const NewsList: React.FC<NewsListProps> = ({newsData}) =>{
                         >
                             {/* Image */}
                             <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-gray-800">
-                                {item.urlToImage ? 
+                                {imageUrl ? 
                                 <img 
-                                src={item.urlToImage} 
+                                src={imageUrl} 
                                 alt={item.title || 'News image'} 
                                 loading="lazy"
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
