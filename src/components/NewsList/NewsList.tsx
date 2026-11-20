@@ -48,7 +48,7 @@ const NewsList: React.FC<NewsListProps> = ({newsData}) =>{
      */
     const getImageUrl = (url: string) => {
         if (!url) return null;
-        return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=400&h=250&fit=cover`;
+        return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&output=webp&w=400&h=250&fit=cover`;
     };
 
     return (

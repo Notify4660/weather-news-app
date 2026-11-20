@@ -4,7 +4,7 @@ import type { WeatherData, ForecastData } from './types';
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const BASE_URL = import.meta.env.VITE_WEATHER_API_URL;
 
-//Create an axios instance with settings
+//Create an axios instance with settings 
 const weatherClient = axios.create({
     baseURL: BASE_URL,
     timeout: 10000, // 10 seconds
