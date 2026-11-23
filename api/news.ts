@@ -10,7 +10,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const response = await axios.get('https://newsapi.org', {
+    const response = await axios.get('https://newsapi.org/v2/everything', {
       params: {
         q,
         pageSize: 10,
