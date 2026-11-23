@@ -151,7 +151,7 @@ function App() {
           <ThemeToggle/>
         </div>
       </header>
-      {loading && <div>Loading...</div>}
+      {loading && <div className="dark:text-white">Loading...</div>}
       {errors.weather && <ErrorMessage {...errors.weather} />}
       {errors.forecast && <ErrorMessage {...errors.forecast} />}
       {errors.news && <ErrorMessage {...errors.news} />}
