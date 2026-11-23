@@ -55,16 +55,25 @@ interface ForecastData {
         name: string,
         timezone: number
     };
-}
+};
+
+interface ApiError {
+  message: string;
+  code: number;
+  details: string;
+};
 
 function App() {
   const [weatherData, setWeatherData] = React.useState<WeatherData | null>(null);
   const [weatherForecast, setWeatherForecast] = React.useState<ForecastData | null>(null);
   const [newsData, setNewsData] = React.useState<NewsData | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState({message:'', code:0, details:''});
-  
-  //Retrieve data from localStorage and perform the load once.
+  const [errors, setErrors] = React.useState<{
+    weather?: ApiError;
+    forecast?: ApiError;
+    news?: ApiError;
+  }>({});
+  // Retrieve data from localStorage and perform the load once.
   useEffect(() => {
     const savedCity = loadCity();
     if (savedCity) {
@@ -72,37 +81,65 @@ function App() {
     }
   }, []);
 
+   // Helper function for converting 'reason' into your error format
+  const parseError = (reason: any, fallbackMessage: string): ApiError => ({
+    message: reason?.message || fallbackMessage,
+    code: reason?.code || reason?.status || 0,
+    details: reason?.details || '',
+  });
+
   const handleSearch = async(city:string) => {
      setLoading(true);
-     setError({message:'', code:0, details:''});
+     setErrors({});
 
-    try{
-      //Parallel request to both API's
-      const [weather, weatherForecast, news] = await Promise.all([
-        weatherApi.getCurrentWeather(city),
-        weatherApi.getForecast(city),
-        newsApi.getNewsByCity(city)
-      ]);
+    const [weatherResult, forecastResult, newsResult] = await Promise.allSettled([
+      weatherApi.getCurrentWeather(city),
+      weatherApi.getForecast(city),
+      newsApi.getNewsByCity(city),
+    ]);
 
-      //Saving the retrieved weather and news data
-      setWeatherData(weather);
-      setWeatherForecast(weatherForecast);
-      setNewsData(news); 
+    const nextErrors: typeof errors = {};
 
-      //Saving city to LocalStorage
-      saveCity(city);
-
-      console.log('Weather:', weather);
-      console.log('WeatherForecast:', weatherForecast);
-      console.log('News:', news);
-
-    }catch(error: any){
-      setError(error);
-      console.error('Error loading data:', error);
-    }finally{
-      setLoading(false);
+    if (weatherResult.status === 'fulfilled') {
+      setWeatherData(weatherResult.value);
+    } else {
+      setWeatherData(null);
+      nextErrors.weather = parseError(weatherResult.reason, 'Failed to load weather');
     }
-  }
+
+    if (forecastResult.status === 'fulfilled') {
+      setWeatherForecast(forecastResult.value);
+    } else {
+      setWeatherForecast(null);
+      nextErrors.forecast = parseError(forecastResult.reason, 'Failed to load forecast');
+    }
+
+    if (newsResult.status === 'fulfilled') {
+      setNewsData(newsResult.value);
+    } else {
+      setNewsData(null);
+      nextErrors.news = parseError(newsResult.reason, 'Failed to load news');
+    }
+
+    setErrors(nextErrors);
+
+    // Save city only, if at least one sevice has responded - successfully
+    const hasAnySuccess =
+      weatherResult.status === 'fulfilled' ||
+      forecastResult.status === 'fulfilled' ||
+      newsResult.status === 'fulfilled';
+
+    if (hasAnySuccess) {
+      saveCity(city);
+    }
+
+    setLoading(false);
+
+    if (import.meta.env.DEV) {
+      console.log('Search results:', { weatherResult, forecastResult, newsResult });
+    }
+  
+}
   
   return (
     <div className='dark:bg-gray-900 bg-gray-100 min-h-screen p-4'>
@@ -115,7 +152,9 @@ function App() {
         </div>
       </header>
       {loading && <div>Loading...</div>}
-      {error && <ErrorMessage message={error.message} code={error.code} details={error.details} />}
+      {errors.weather && <ErrorMessage {...errors.weather} />}
+      {errors.forecast && <ErrorMessage {...errors.forecast} />}
+      {errors.news && <ErrorMessage {...errors.news} />}
       
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-4 mt-5">
         {weatherData && (

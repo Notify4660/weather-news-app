@@ -7,7 +7,7 @@ const BASE_URL = import.meta.env.VITE_WEATHER_API_URL;
 //Create an axios instance with settings 
 const weatherClient = axios.create({
     baseURL: BASE_URL,
-    timeout: 10000, // 10 seconds
+    timeout: 30000, // 30 seconds
     headers: {
         'Accept': 'application/json'
     },

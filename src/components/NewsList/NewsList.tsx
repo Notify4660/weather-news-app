@@ -20,7 +20,7 @@ interface NewsListProps {
  * @component
  */
 const NewsList: React.FC<NewsListProps> = ({newsData}) =>{
-    if(!newsData) return null;
+    if(!newsData || !newsData.articles) return null;
     const [visibleCount, setVisibleCount] = useState(3);
     const isAllLoaded = visibleCount >= newsData.articles.length;
     const lastNewsRef = useRef<HTMLAnchorElement>(null);
