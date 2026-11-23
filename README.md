@@ -54,9 +54,8 @@ src/
 
 ## 📅 Timeline
 
-- **Started:** July 1, 2026
-- **Break(personal reasons):** July 11-23, 2026
-- **Finalized:** July 24, 2026
+- **v1.0 (Initial Release):** July 2026
+- **v1.1 (Latest Update):** November 23, 2026
 
 ## 👨‍💻 Author
 Notify4660 — [GitHub](https://github.com/Notify4660)
