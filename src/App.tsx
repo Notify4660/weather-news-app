@@ -5,7 +5,7 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import SearchBar from './components/SearchBar/SearchBar';
 import WeatherCard from './components/WeatherCard/WeatherCard'
 import NewsList from './components/NewsList/NewsList';
-import TemperatureChart from './components/TemperatureChart/TemperatureChart';
+import TemperatureChart from './components/WetherChart/WetherChart';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle'
 import {saveCity, loadCity} from './utils/localStorage';
 import {ChartNetwork} from 'lucide-react';

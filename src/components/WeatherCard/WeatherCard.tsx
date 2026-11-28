@@ -142,7 +142,7 @@ const WeatherCard: React.FC<weatherDataProps> = ({weatherData}) => {
                     </div>
                 </div>
                    
-                {/* Восход/Закат */}
+                {/* Sunrise/Sunset */}
                 <div className="flex items-center gap-2">
                     <div className="flex flex-col text-xs lg:text-sm">
                         <span className="text-amber-400">🌅</span>

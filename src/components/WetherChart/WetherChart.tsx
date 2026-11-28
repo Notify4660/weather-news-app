@@ -5,20 +5,14 @@ import {formatTemperature} from '../../utils/weatherHelpers';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface ForecastDataProps{
-    /** Array of wather forecast entries */
     list: Array<{
-        /** Unix timestamp (UTC) */
         dt: number, 
         main:{
-            /** Temperature in Celsius */
             temp: number, 
         };
     }>;
-    /** City information for timezone offset */
     city: { 
-        /** City name */
         name: string, 
-        /** Timezone offset in seconds from UTC */
         timezone: number
     };
 }
